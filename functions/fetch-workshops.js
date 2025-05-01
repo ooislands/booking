@@ -28,9 +28,19 @@ exports.handler = async function(event, context) {
     const $ = cheerio.load(html);
     const workshopItems = [];
     
-    // 네이버 예약 페이지의 실제 선택자로 수정 필요
-    $('._itemSection').each((i, el) => {
-      // 기존 파싱 코드
+    // 워크샵 아이템 파싱
+    $('.item_list').each((i, el) => {
+      const title = $(el).find('.item_title').text().trim();
+      const price = $(el).find('.price').text().trim();
+      const description = $(el).find('.item_desc').text().trim();
+      const imageUrl = $(el).find('.item_img img').attr('src');
+      
+      workshopItems.push({
+        title,
+        price,
+        description,
+        imageUrl
+      });
     });
     
     // CORS 헤더를 포함한 응답 반환
