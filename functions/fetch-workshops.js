@@ -19,9 +19,20 @@ exports.handler = async function(event, context) {
   
   try {
     // Puppeteer 브라우저 실행
-    const executablePath = await chromium.executablePath();
+    const executablePath = process.env.CHROME_AWS_LAMBDA_CHROME_EXECUTABLE_PATH || await chromium.executablePath();
+    
     const browser = await puppeteer.launch({
-      args: chromium.args,
+      args: [
+        ...chromium.args,
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--no-first-run',
+        '--no-zygote',
+        '--single-process',
+        '--disable-extensions'
+      ],
       defaultViewport: chromium.defaultViewport,
       executablePath: executablePath,
       headless: true,
@@ -32,7 +43,8 @@ exports.handler = async function(event, context) {
     
     // 네이버 예약 페이지 접속
     await page.goto('https://booking.naver.com/booking/5/bizes/1189894/items', {
-      waitUntil: 'networkidle0'
+      waitUntil: 'networkidle0',
+      timeout: 30000
     });
     
     // 페이지의 HTML 가져오기

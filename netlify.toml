@@ -1,5 +1,22 @@
 [build]
+  command = "npm run build"
   functions = "functions"
+  publish = "public"
+
+[functions]
+  node_bundler = "esbuild"
+
+[functions.environment]
+  CHROME_AWS_LAMBDA_CHROME_EXECUTABLE_PATH = "/opt/chrome/chrome"
+  CHROME_AWS_LAMBDA_CHROME_EXECUTABLE_PATH_LOCAL = "/tmp/chromium"
+  CHROME_AWS_LAMBDA_CHROME_EXECUTABLE_PATH_LOCAL_DEV = "/tmp/chromium"
+  CHROME_AWS_LAMBDA_CHROME_EXECUTABLE_PATH_LOCAL_PROD = "/tmp/chromium"
+  CHROME_AWS_LAMBDA_CHROME_EXECUTABLE_PATH_LOCAL_STAGING = "/tmp/chromium"
+  CHROME_AWS_LAMBDA_CHROME_EXECUTABLE_PATH_LOCAL_TEST = "/tmp/chromium"
+  CHROME_AWS_LAMBDA_CHROME_EXECUTABLE_PATH_LOCAL_DEV_2 = "/tmp/chromium"
+  CHROME_AWS_LAMBDA_CHROME_EXECUTABLE_PATH_LOCAL_PROD_2 = "/tmp/chromium"
+  CHROME_AWS_LAMBDA_CHROME_EXECUTABLE_PATH_LOCAL_STAGING_2 = "/tmp/chromium"
+  CHROME_AWS_LAMBDA_CHROME_EXECUTABLE_PATH_LOCAL_TEST_2 = "/tmp/chromium"
 
 [[headers]]
   for = "/*"
