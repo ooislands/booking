@@ -24,23 +24,31 @@ exports.handler = async function(event, context) {
     });
     const html = response.data;
     
-    // HTML 파싱 (기존 코드와 동일)
+    // HTML 파싱
     const $ = cheerio.load(html);
     const workshopItems = [];
     
+    // 디버깅을 위한 HTML 구조 출력
+    console.log('HTML Content:', html);
+    
     // 워크샵 아이템 파싱
-    $('.item_list').each((i, el) => {
+    $('.item_list_wrap .item_list').each((i, el) => {
       const title = $(el).find('.item_title').text().trim();
       const price = $(el).find('.price').text().trim();
       const description = $(el).find('.item_desc').text().trim();
       const imageUrl = $(el).find('.item_img img').attr('src');
       
-      workshopItems.push({
-        title,
-        price,
-        description,
-        imageUrl
-      });
+      // 디버깅을 위한 각 아이템 정보 출력
+      console.log('Found item:', { title, price, description, imageUrl });
+      
+      if (title) {  // 제목이 있는 경우에만 추가
+        workshopItems.push({
+          title,
+          price,
+          description,
+          imageUrl
+        });
+      }
     });
     
     // CORS 헤더를 포함한 응답 반환
