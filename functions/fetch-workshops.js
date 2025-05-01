@@ -1,6 +1,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const puppeteer = require('puppeteer');
+const chromium = require('chrome-aws-lambda');
+const puppeteer = require('puppeteer-core');
 
 exports.handler = async function(event, context) {
   // CORS 관련 처리 - Preflight 요청에 대응
@@ -18,9 +19,15 @@ exports.handler = async function(event, context) {
   
   try {
     // Puppeteer 브라우저 실행
+    const executablePath = await chromium.executablePath;
     const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: executablePath,
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
     });
+    
     const page = await browser.newPage();
     
     // 네이버 예약 페이지 접속
